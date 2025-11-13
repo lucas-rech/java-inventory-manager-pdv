@@ -49,8 +49,8 @@ public class ProductItemJsonTest {
         assertThat(json.write(productItem)).extractingJsonPathStringValue("@.ncm").isEqualTo("19059020");
         assertThat(json.write(productItem)).extractingJsonPathNumberValue("@.price").isEqualTo(9.5);
         assertThat(json.write(productItem)).extractingJsonPathNumberValue("@.cost").isEqualTo(5.0);
-        assertThat(json.write(productItem)).extractingJsonPathStringValue("@.createdAt").isEqualTo("2023-10-01 10:00:00");
-        assertThat(json.write(productItem)).extractingJsonPathStringValue("@.updatedAt").isEqualTo("2023-10-15 12:00:00");
+        assertThat(json.write(productItem)).extractingJsonPathStringValue("@.createdAt").isEqualTo("2023-10-01T10:00:00");
+        assertThat(json.write(productItem)).extractingJsonPathStringValue("@.updatedAt").isEqualTo("2023-10-15T12:00:00");
     }
 
     @Test
@@ -64,8 +64,8 @@ public class ProductItemJsonTest {
                     "ncm": "19059020",
                     "price": 9.5,
                     "cost": 5.0,
-                    "createdAt": "2023-10-01 10:00:00",
-                    "updatedAt": "2023-10-15 12:00:00"
+                    "createdAt": "2023-10-01T10:00:00",
+                    "updatedAt": "2023-10-15T12:00:00"
                 }
                 """;
         

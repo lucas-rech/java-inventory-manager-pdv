@@ -3,6 +3,7 @@ package edu.ifrs.si.inventorymanagerpdv;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class InventorymanagerpdvApplicationTests {
+class ProductItemTest {
     @Autowired
     TestRestTemplate restTemplate;
 
@@ -44,8 +45,8 @@ class InventorymanagerpdvApplicationTests {
         String ncm = documentContext.read("$.ncm");
         Double price = documentContext.read("$.price");
         Double cost = documentContext.read("$.cost");
-        LocalDateTime createdAt = documentContext.read("$.createdAt");
-        LocalDateTime updatedAt = documentContext.read("$.updatedAt");
+        LocalDateTime createdAt = LocalDateTime.parse(documentContext.read("$.createdAt"));
+        LocalDateTime updatedAt = LocalDateTime.parse(documentContext.read("$.updatedAt"));
 
         assertThat(id).isEqualTo(44);
         assertThat(name).isEqualTo("Fandangos");
@@ -54,8 +55,8 @@ class InventorymanagerpdvApplicationTests {
         assertThat(ncm).isEqualTo("19059020");
         assertThat(price).isEqualTo(9.5);
         assertThat(cost).isEqualTo(5.0);
-        assertThat(createdAt).isEqualTo("2023-10-01 10:00:00");
-        assertThat(updatedAt).isEqualTo("2023-10-15 12:00:00");
+        assertThat(createdAt).isEqualTo("2023-01-10T10:00:00");
+        assertThat(updatedAt).isEqualTo("2023-01-10T12:00:00");
     }
 
 }

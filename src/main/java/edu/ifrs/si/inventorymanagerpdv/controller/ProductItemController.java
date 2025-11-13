@@ -21,7 +21,6 @@ public class ProductItemController {
         this.productItemRepository = repository;
     }
 
-
     @GetMapping("/{requestedId}")
     private ResponseEntity<ProductItem> findById(@PathVariable Long requestedId) {
         Optional<ProductItem> productItem = productItemRepository.findById(requestedId);
