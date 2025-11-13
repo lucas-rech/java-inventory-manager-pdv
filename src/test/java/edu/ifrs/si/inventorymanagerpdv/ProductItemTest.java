@@ -118,4 +118,15 @@ class ProductItemTest {
         JSONArray ids = documentContext.read("$..id");
         assertThat(ids).containsExactlyInAnyOrder(IntStream.rangeClosed(1,30).boxed().toArray());
     }
+
+    @Test
+    void shouldReturnAPageOfProductItems() {
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/products?page=0&size=15", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        int productItemsCount = documentContext.read("$.length()");
+        assertThat(productItemsCount).isEqualTo(15);
+    }
 }

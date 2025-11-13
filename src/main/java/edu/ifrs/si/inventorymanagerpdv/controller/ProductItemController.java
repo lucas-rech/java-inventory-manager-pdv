@@ -32,7 +32,7 @@ public class ProductItemController {
     }
 
     @GetMapping("/{requestedId}")
-    private ResponseEntity<ProductItem> findById(@PathVariable Long requestedId) {
+    public ResponseEntity<ProductItem> findById(@PathVariable Long requestedId) {
         Optional<ProductItem> productItem = productItemRepository.findById(requestedId);
 
         if (productItem.isPresent()) {
