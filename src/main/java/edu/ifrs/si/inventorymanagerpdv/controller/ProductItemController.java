@@ -1,7 +1,6 @@
 package edu.ifrs.si.inventorymanagerpdv.controller;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +43,7 @@ public class ProductItemController {
     }
 
     @GetMapping
-    private ResponseEntity<List<ProductItem>> getAll(Pageable pageable) {
+    private ResponseEntity<List<ProductItem>> getAll(@PageableDefault(size = 100) Pageable pageable) {
         Page<ProductItem> page = productItemRepository.findAll(
             PageRequest.of(
                 pageable.getPageNumber(),

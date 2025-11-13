@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
 import edu.ifrs.si.inventorymanagerpdv.model.ProductItem;
+import net.minidev.json.JSONArray;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ProductItemTest {
@@ -71,8 +73,8 @@ class ProductItemTest {
 
         ResponseEntity<Void> createResponse = restTemplate
                 .postForEntity("/products", productItem, Void.class);
-
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
 
         URI locationOfNewProductItem = createResponse.getHeaders().getLocation();
         ResponseEntity<String> getResponse = restTemplate
@@ -101,4 +103,19 @@ class ProductItemTest {
         
     }
 
+
+
+    @Test
+    void shouldReturnAllProductItemsWhenListIsRequired() {
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/products", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        int productItemsCount = documentContext.read("$.length()");
+        assertThat(productItemsCount).isEqualTo(30);
+
+        JSONArray ids = documentContext.read("$..id");
+        assertThat(ids).containsExactlyInAnyOrder(IntStream.rangeClosed(1,30).boxed().toArray());
+    }
 }
