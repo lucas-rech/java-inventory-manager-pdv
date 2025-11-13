@@ -52,4 +52,43 @@ public class ProductItemJsonTest {
         assertThat(json.write(productItem)).extractingJsonPathStringValue("@.createdAt").isEqualTo("2023-10-01 10:00:00");
         assertThat(json.write(productItem)).extractingJsonPathStringValue("@.updatedAt").isEqualTo("2023-10-15 12:00:00");
     }
+
+    @Test
+    void cashCardDeserializationTest() throws IOException {
+        String expected = """
+                {
+                    "id": 44,
+                    "name": "Fandangos",
+                    "description": "Salgadinho sabor queijo",
+                    "gtin": "7891991000137",
+                    "ncm": "19059020",
+                    "price": 9.5,
+                    "cost": 5.0,
+                    "createdAt": "2023-10-01 10:00:00",
+                    "updatedAt": "2023-10-15 12:00:00"
+                }
+                """;
+        
+        assertThat(json.parse(expected))
+                .isEqualTo(new ProductItem(
+                    44L,
+                    "Fandangos",
+                    "Salgadinho sabor queijo", 
+                    "7891991000137", 
+                    "19059020", 
+                    9.5, 
+                    5.0, 
+                    LocalDateTime.parse("2023-10-01T10:00:00"), 
+                    LocalDateTime.parse("2023-10-15T12:00:00")
+                ));
+        assertThat(json.parseObject(expected).id()).isEqualTo(44L);
+        assertThat(json.parseObject(expected).name()).isEqualTo("Fandangos");
+        assertThat(json.parseObject(expected).description()).isEqualTo("Salgadinho sabor queijo");
+        assertThat(json.parseObject(expected).gtin()).isEqualTo("7891991000137");
+        assertThat(json.parseObject(expected).ncm()).isEqualTo("19059020");
+        assertThat(json.parseObject(expected).price()).isEqualTo(9.5);
+        assertThat(json.parseObject(expected).cost()).isEqualTo(5.0);
+        assertThat(json.parseObject(expected).createdAt()).isEqualTo("2023-10-01T10:00:00");
+        assertThat(json.parseObject(expected).updatedAt()).isEqualTo("2023-10-15T12:00:00");
+    }
 }
