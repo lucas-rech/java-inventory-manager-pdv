@@ -2,6 +2,7 @@ package edu.ifrs.si.inventorymanagerpdv;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
+
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+
+import edu.ifrs.si.inventorymanagerpdv.model.ProductItem;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ProductItemTest {
@@ -56,6 +61,28 @@ class ProductItemTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isBlank();
+    }
+
+
+    @Test
+    @DirtiesContext
+    void shouldCreateANewnProductItem() {
+        ProductItem productItem = new ProductItem(null, "Whisky Jack Daniel's Fire 1L",  "O melhor whisky que está tendo por essas bandas", "64689345670789", "12345678", 150.00, 90.00, LocalDateTime.now(), LocalDateTime.now());
+
+        ResponseEntity<Void> createResponse = restTemplate
+                .postForEntity("/products", productItem, Void.class);
+
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        URI locationOfNewProductItem = createResponse.getHeaders().getLocation();
+        ResponseEntity<String> getResponse = restTemplate
+                .getForEntity(locationOfNewProductItem, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse((getResponse.getBody()));
+        Number id = documentContext.read("$.id");
+        //TODO: Completar teste de valores
+        
     }
 
 }
