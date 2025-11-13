@@ -3,7 +3,6 @@ package edu.ifrs.si.inventorymanagerpdv;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +56,16 @@ class ProductItemTest {
         assertThat(cost).isEqualTo(5.0);
         assertThat(createdAt).isEqualTo("2023-01-10T10:00:00");
         assertThat(updatedAt).isEqualTo("2023-01-10T12:00:00");
+    }
+
+
+    @Test
+    void shouldNotReturnAProductWithAnUnknownId() {
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/products/5923423", String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).isBlank();
     }
 
 }
