@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Id;
+
 public record ProductItem(
-        Long id,
+        @Id Long id,
         String name,
         String description,
         String gtin,
