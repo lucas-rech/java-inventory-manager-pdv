@@ -67,7 +67,7 @@ class ProductItemTest {
     @Test
     @DirtiesContext
     void shouldCreateANewnProductItem() {
-        ProductItem productItem = new ProductItem(null, "Whisky Jack Daniel's Fire 1L",  "O melhor whisky que está tendo por essas bandas", "64689345670789", "12345678", 150.00, 90.00, LocalDateTime.now(), LocalDateTime.now());
+        ProductItem productItem = new ProductItem(null, "Whisky Jack Daniel's Fire 1L",  "O melhor whisky que está tendo por essas bandas", "64689345670789", "12345678", 150.00, 90.89, LocalDateTime.parse("2025-02-26T13:45:24"), LocalDateTime.parse("2025-02-26T13:45:24"));
 
         ResponseEntity<Void> createResponse = restTemplate
                 .postForEntity("/products", productItem, Void.class);
@@ -81,7 +81,23 @@ class ProductItemTest {
 
         DocumentContext documentContext = JsonPath.parse((getResponse.getBody()));
         Number id = documentContext.read("$.id");
-        //TODO: Completar teste de valores
+        assertThat(id).isNotNull();
+        String name = documentContext.read("$.name");
+        assertThat(name).isEqualTo("Whisky Jack Daniel's Fire 1L");
+        String description = documentContext.read("$.description");
+        assertThat(description).isEqualTo("O melhor whisky que está tendo por essas bandas");
+        String gtin = documentContext.read("$.gtin");
+        assertThat(gtin).isEqualTo("64689345670789");
+        String ncm = documentContext.read("$.ncm");
+        assertThat(ncm).isEqualTo("12345678");
+        Double price = documentContext.read("$.price");
+        assertThat(price).isEqualTo(150.00);
+        Double cost = documentContext.read("$.cost");
+        assertThat(cost).isEqualTo(90.89);
+        String createdAt = documentContext.read("$.createdAt");
+        assertThat(createdAt).isEqualTo("2025-02-26T13:45:24");
+        String updatedAt = documentContext.read("$.updatedAt");
+        assertThat(updatedAt).isEqualTo("2025-02-26T13:45:24");
         
     }
 

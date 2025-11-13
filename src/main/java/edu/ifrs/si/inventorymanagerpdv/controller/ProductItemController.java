@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +56,7 @@ public class ProductItemController {
 
     @PostMapping
     private ResponseEntity<Void> createProductItem(@RequestBody ProductItem requestProduct, UriComponentsBuilder ucb) {
-        ProductItem newItem = new ProductItem(null, requestProduct.name(), requestProduct.description(), requestProduct.gtin(), requestProduct.ncm(), requestProduct.price(), requestProduct.cost(), LocalDateTime.now(), LocalDateTime.now());
+        ProductItem newItem = new ProductItem(null, requestProduct.name(), requestProduct.description(), requestProduct.gtin(), requestProduct.ncm(), requestProduct.price(), requestProduct.cost(), requestProduct.createdAt(), requestProduct.updatedAt());
 
         ProductItem createdProductItem = productItemRepository.save(newItem);
 
