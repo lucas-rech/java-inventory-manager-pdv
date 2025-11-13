@@ -20,7 +20,7 @@ public class ProductItemJsonTest {
     @Test
     void cashCardSerializationTest() throws IOException {
         ProductItem productItem = new ProductItem(
-                44L,
+                1L,
                 "Fandangos",
                 "Salgadinho sabor queijo",
                 "7891991000137",
@@ -42,7 +42,7 @@ public class ProductItemJsonTest {
         assertThat(json.write(productItem)).hasJsonPathStringValue("@.createdAt");
         assertThat(json.write(productItem)).hasJsonPathStringValue("@.updatedAt");
 
-        assertThat(json.write(productItem)).extractingJsonPathNumberValue("@.id").isEqualTo(44);
+        assertThat(json.write(productItem)).extractingJsonPathNumberValue("@.id").isEqualTo(1);
         assertThat(json.write(productItem)).extractingJsonPathStringValue("@.name").isEqualTo("Fandangos");
         assertThat(json.write(productItem)).extractingJsonPathStringValue("@.description").isEqualTo("Salgadinho sabor queijo");
         assertThat(json.write(productItem)).extractingJsonPathStringValue("@.gtin").isEqualTo("7891991000137");
@@ -57,7 +57,7 @@ public class ProductItemJsonTest {
     void cashCardDeserializationTest() throws IOException {
         String expected = """
                 {
-                    "id": 44,
+                    "id": 1,
                     "name": "Fandangos",
                     "description": "Salgadinho sabor queijo",
                     "gtin": "7891991000137",
@@ -71,7 +71,7 @@ public class ProductItemJsonTest {
         
         assertThat(json.parse(expected))
                 .isEqualTo(new ProductItem(
-                    44L,
+                    1L,
                     "Fandangos",
                     "Salgadinho sabor queijo", 
                     "7891991000137", 
@@ -81,7 +81,7 @@ public class ProductItemJsonTest {
                     LocalDateTime.parse("2023-10-01T10:00:00"), 
                     LocalDateTime.parse("2023-10-15T12:00:00")
                 ));
-        assertThat(json.parseObject(expected).id()).isEqualTo(44L);
+        assertThat(json.parseObject(expected).id()).isEqualTo(1L);
         assertThat(json.parseObject(expected).name()).isEqualTo("Fandangos");
         assertThat(json.parseObject(expected).description()).isEqualTo("Salgadinho sabor queijo");
         assertThat(json.parseObject(expected).gtin()).isEqualTo("7891991000137");
