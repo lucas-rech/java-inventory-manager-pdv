@@ -37,6 +37,14 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .build();
     }
 
+    public User findById(Long id) {
+        if (id == null) {
+            throw new NullableUserException("id is null");
+        }
+
+        return userRepository.findById(id).orElse(null);
+    }
+
     public User create(User newUser) {
         if (newUser == null) {
             throw new NullableUserException("creating newUser is null");
