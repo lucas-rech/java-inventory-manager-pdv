@@ -61,7 +61,7 @@ public class ProductItemJsonTest {
     }
 
     @Test
-    void cashCardSerializationTest() throws IOException {
+    void productItemSerializationTest() throws IOException {
         ProductItem productItem = new ProductItem(
                 1L,
                 "Fandangos",
