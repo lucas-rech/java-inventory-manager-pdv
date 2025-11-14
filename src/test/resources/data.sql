@@ -29,3 +29,6 @@ INSERT INTO product_item (NAME, DESCRIPTION, GTIN, NCM, PRICE, COST, CREATED_AT,
 ('Escova de Dentes Colgate', 'Escova dental média', '7891150049026', '96032100', 7.50, 3.90, '2023-01-10T12:15:00', '2023-01-10T14:15:00'),
 ('Pasta de Dente Colgate Total 90g', 'Creme dental proteção completa', '7891150049019', '33061000', 9.50, 4.80, '2023-01-10T12:20:00', '2023-01-10T14:20:00'),
 ('Desodorante Rexona Aerosol', 'Desodorante antitranspirante 150ml', '7891150032400', '33072010', 14.90, 8.90, '2023-01-10T12:25:00', '2023-01-10T14:25:00');
+
+INSERT INTO app_user(NAME, USERNAME, PHONE_NUMBER, ROLE, PASSWORD, CREATED_AT, UPDATED_AT, DELETED) VALUES
+('Lucas Rech', 'lucasrech00', '54999999999', 'ADMIN', 'abc123', '2025-02-26T13:45:25', '2025-02-26T13:45:25', FALSE);

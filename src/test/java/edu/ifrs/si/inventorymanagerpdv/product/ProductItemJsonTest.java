@@ -1,4 +1,4 @@
-package edu.ifrs.si.inventorymanagerpdv;
+package edu.ifrs.si.inventorymanagerpdv.product;
 
 import edu.ifrs.si.inventorymanagerpdv.model.ProductItem;
 
