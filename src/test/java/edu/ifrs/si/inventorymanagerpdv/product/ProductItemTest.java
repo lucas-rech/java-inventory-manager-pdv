@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,12 +21,41 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
 import edu.ifrs.si.inventorymanagerpdv.model.ProductItem;
+import edu.ifrs.si.inventorymanagerpdv.model.Role;
+import edu.ifrs.si.inventorymanagerpdv.model.User;
+import edu.ifrs.si.inventorymanagerpdv.repository.UserRepository;
+import edu.ifrs.si.inventorymanagerpdv.service.UserService;
 import net.minidev.json.JSONArray;
 
+@DirtiesContext
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ProductItemTest {
     @Autowired
     TestRestTemplate restTemplate;
+
+    @Autowired
+    UserService userService;
+
+@Autowired
+UserRepository userRepository;
+
+@BeforeEach
+void setup() {
+    // Limpa o banco para garantir
+    userRepository.deleteAll(); 
+    
+    // Cria o usuário programaticamente
+    User adminUser = new User(
+        null, 
+        "Lucas Rech", 
+        "lucasrech00", 
+        "54999999999", 
+        Role.ADMIN, // A role correta
+        "abc123",   // A senha pura
+        null, null, false
+    );
+    userService.create(adminUser);
+}
 
 
 
@@ -74,6 +104,7 @@ class ProductItemTest {
         ProductItem productItem = new ProductItem(null, "Whisky Jack Daniel's Fire 1L",  "O melhor whisky que está tendo por essas bandas", "64689345670789", "12345678", 150.00, 90.89, LocalDateTime.now(), LocalDateTime.now());
 
         ResponseEntity<Void> createResponse = restTemplate
+                .withBasicAuth("lucasrech00", "abc123")
                 .postForEntity("/products", productItem, Void.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 

@@ -1,6 +1,7 @@
 package edu.ifrs.si.inventorymanagerpdv.controller;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 import edu.ifrs.si.inventorymanagerpdv.service.ProductItemService;
@@ -43,7 +44,7 @@ public class ProductItemController {
     }
 
     @PostMapping
-    private ResponseEntity<Void> createProductItem(@RequestBody ProductItem requestProduct, UriComponentsBuilder ucb) {
+    private ResponseEntity<Void> createProductItem(@RequestBody ProductItem requestProduct, UriComponentsBuilder ucb, Principal principal) {
         ProductItem createdProductItem = productItemService.save(requestProduct);
         URI locationOfNewCashCard = ucb
                 .path("/products/{id}")
