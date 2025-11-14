@@ -1,9 +1,11 @@
 package edu.ifrs.si.inventorymanagerpdv;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -69,7 +71,7 @@ class ProductItemTest {
     @Test
     @DirtiesContext
     void shouldCreateANewnProductItem() {
-        ProductItem productItem = new ProductItem(null, "Whisky Jack Daniel's Fire 1L",  "O melhor whisky que está tendo por essas bandas", "64689345670789", "12345678", 150.00, 90.89, LocalDateTime.parse("2025-02-26T13:45:24"), LocalDateTime.parse("2025-02-26T13:45:24"));
+        ProductItem productItem = new ProductItem(null, "Whisky Jack Daniel's Fire 1L",  "O melhor whisky que está tendo por essas bandas", "64689345670789", "12345678", 150.00, 90.89, LocalDateTime.now(), LocalDateTime.now());
 
         ResponseEntity<Void> createResponse = restTemplate
                 .postForEntity("/products", productItem, Void.class);
@@ -97,9 +99,9 @@ class ProductItemTest {
         Double cost = documentContext.read("$.cost");
         assertThat(cost).isEqualTo(90.89);
         String createdAt = documentContext.read("$.createdAt");
-        assertThat(createdAt).isEqualTo("2025-02-26T13:45:24");
+        assertThat(LocalDateTime.parse(createdAt)).isCloseTo(productItem.createdAt(), within(1, ChronoUnit.SECONDS));
         String updatedAt = documentContext.read("$.updatedAt");
-        assertThat(updatedAt).isEqualTo("2025-02-26T13:45:24");
+        assertThat(LocalDateTime.parse(updatedAt)).isCloseTo(productItem.updatedAt(), within(1, ChronoUnit.SECONDS));
         
     }
 
