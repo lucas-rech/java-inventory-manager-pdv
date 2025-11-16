@@ -50,4 +50,6 @@ public class BatchJsonTest {
         assertThat(json.write(batch)).isStrictlyEqualToJson("single-batch.json");
     }
 
+    //TODO: Create deserialization test
+
 }
