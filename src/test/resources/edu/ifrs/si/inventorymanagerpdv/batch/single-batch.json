@@ -2,8 +2,8 @@
     "id": 1,
     "batchId": "123ABC456",
     "product": {
-        "productId": 1,
-        "productName": "Fandangos"
+        "id": 1,
+        "name": "Fandangos"
     },
     "cost": 200.00,
     "quantity": 350,

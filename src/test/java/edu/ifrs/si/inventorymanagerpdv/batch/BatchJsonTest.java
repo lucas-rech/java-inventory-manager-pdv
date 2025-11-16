@@ -35,7 +35,7 @@ public class BatchJsonTest {
     }
 
     @Test
-    void batchSerialization() throws IOException {
+    void batchSerializationTest() throws IOException {
         Batch batch = new Batch(
             1L, 
             "123ABC456",
@@ -48,8 +48,20 @@ public class BatchJsonTest {
         );
 
         assertThat(json.write(batch)).isStrictlyEqualToJson("single-batch.json");
+        assertThat(json.write(batch)).extractingJsonPathNumberValue("@.id").isEqualTo(1);
+        assertThat(json.write(batch)).extractingJsonPathStringValue("@.batchId").isEqualTo("123ABC456");
+        assertThat(json.write(batch)).extractingJsonPathNumberValue("@.product.id").isEqualTo(1);
+        assertThat(json.write(batch)).extractingJsonPathStringValue("@.product.name").isEqualTo("Fandangos");
+        assertThat(json.write(batch)).extractingJsonPathNumberValue("@.cost").isEqualTo(200.00);
+        assertThat(json.write(batch)).extractingJsonPathStringValue("@.validationDate").isEqualTo("2023-10-01T10:00:00");
+        assertThat(json.write(batch)).extractingJsonPathStringValue("@.createdAt").isEqualTo("2023-10-01T10:00:00");
+        assertThat(json.write(batch)).extractingJsonPathStringValue("@.updatedAt").isEqualTo("2023-10-01T10:00:00");
     }
 
-    //TODO: Create deserialization test
+    @Test
+    void batchDeserializationTest() throws IOException {
+
+    }
+
 
 }
