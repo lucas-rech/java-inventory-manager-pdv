@@ -1,7 +1,6 @@
 package edu.ifrs.si.inventorymanagerpdv.controller;
 
 import edu.ifrs.si.inventorymanagerpdv.model.User;
-import edu.ifrs.si.inventorymanagerpdv.service.CustomUserDetailsService;
 import edu.ifrs.si.inventorymanagerpdv.service.UserService;
 
 import org.springframework.http.ResponseEntity;
