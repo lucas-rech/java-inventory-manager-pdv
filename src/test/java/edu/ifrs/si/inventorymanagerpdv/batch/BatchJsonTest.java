@@ -60,7 +60,45 @@ public class BatchJsonTest {
 
     @Test
     void batchDeserializationTest() throws IOException {
+        String expected = """
+                {
+                    "id": 1,
+                    "batchId": "123ABC456",
+                    "product": {
+                        "id": 1,
+                        "name": "Fandangos"
+                    },
+                    "cost": 200.00,
+                    "quantity": 350,
+                    "validationDate": "2023-10-01T10:00:00",
+                    "createdAt": "2023-10-01T10:00:00",
+                    "updatedAt": "2023-10-01T10:00:00"
+                }
+                """;
+        
+        assertThat(json.parse(expected)).isEqualTo(
+            new Batch(
+                1L, 
+                "123ABC456", 
+                new ProductBatchDTO(
+                    1L,
+                    "Fandangos"), 
+                200.00, 
+                350, 
+                LocalDateTime.parse("2023-10-01T10:00:00"), 
+                LocalDateTime.parse("2023-10-01T10:00:00"),
+                LocalDateTime.parse("2023-10-01T10:00:00"))
+        );
 
+        assertThat(json.parseObject(expected).id()).isEqualTo(1);
+        assertThat(json.parseObject(expected).batchId()).isEqualTo("123ABC456");
+        assertThat(json.parseObject(expected).product().id()).isEqualTo(1);
+        assertThat(json.parseObject(expected).product().name()).isEqualTo("Fandangos");
+        assertThat(json.parseObject(expected).cost()).isEqualTo(200.00);
+        assertThat(json.parseObject(expected).quantity()).isEqualTo(350);
+        assertThat(json.parseObject(expected).validationDate()).isEqualTo("2023-10-01T10:00:00");
+        assertThat(json.parseObject(expected).createdAt()).isEqualTo("2023-10-01T10:00:00");
+        assertThat(json.parseObject(expected).updatedAt()).isEqualTo("2023-10-01T10:00:00");
     }
 
 
