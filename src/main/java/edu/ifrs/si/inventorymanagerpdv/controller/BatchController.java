@@ -9,25 +9,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ifrs.si.inventorymanagerpdv.model.Batch;
-import edu.ifrs.si.inventorymanagerpdv.repository.BatchRepository;
+import edu.ifrs.si.inventorymanagerpdv.service.BatchService;
 
 @RestController
 @RequestMapping("/batches")
 public class BatchController {
 
-    private final BatchRepository batchRepository;
+    private final BatchService batchService;
 
-    public BatchController(BatchRepository batchRepository) {
-        this.batchRepository = batchRepository;
+    public BatchController(BatchService batchService) {
+        this.batchService = batchService;
     }
 
 
     @GetMapping()
     public ResponseEntity<List<Batch>> getBatchesForProductId(@RequestParam(required = true) Long product){
-        List<Batch> response = batchRepository.findAllByProductId(product);
-
-        return ResponseEntity.ok().body(response);
-        
+        List<Batch> response = batchService.findBatchesByProductId(product);
+        return ResponseEntity.ok(response);
     }
 
 }
