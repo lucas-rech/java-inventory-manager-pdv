@@ -12,6 +12,6 @@ import edu.ifrs.si.inventorymanagerpdv.model.Batch;
 public interface BatchRepository extends CrudRepository<Batch, Long>, PagingAndSortingRepository<Batch, Long>{
     
     @Query("SELECT * FROM batch WHERE product_id = :id")
-     Optional<List<Batch>> findAllByProductId(Long id);
+    List<Batch> findAllByProductId(Long id);
 
 }

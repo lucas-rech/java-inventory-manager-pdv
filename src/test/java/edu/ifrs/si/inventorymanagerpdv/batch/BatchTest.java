@@ -50,4 +50,14 @@ public class BatchTest {
         assertThat(createdAt).isEqualTo("2023-10-01T10:00:00");
         assertThat(updatedAt).isEqualTo("2023-10-01T10:00:00");
     }
+
+
+    @Test
+    void shouldNotReturnAnyBatchesWithAnUnknownProductId() {
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/batches?product=2421", String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).isBlank();
+    }
 }

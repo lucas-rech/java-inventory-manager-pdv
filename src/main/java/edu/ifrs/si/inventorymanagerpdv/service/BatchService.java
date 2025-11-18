@@ -23,13 +23,14 @@ public class BatchService {
 
 
     public List<Batch> findBatchesByProductId(Long id) {
-        Optional<List<Batch>> batches = batchRepository.findAllByProductId(id);
+        List<Batch> batches = batchRepository.findAllByProductId(id);
 
         if (batches.isEmpty()) {
-            return null;
+            return List.of();
         }
+
         ProductItem product = productItemService.getProductItemById(id);
-        return batches.get().stream().map(b ->
+        return batches.stream().map(b ->
         new Batch(
             b.id(), 
             b.batchId(), 
@@ -40,6 +41,6 @@ public class BatchService {
             b.createdAt(),
             b.updatedAt()
         )).toList();
-}
+    }
 
 }

@@ -25,6 +25,10 @@ public class BatchController {
     @GetMapping()
     public ResponseEntity<List<Batch>> getBatchesForProductId(@RequestParam(required = true) Long product){
         List<Batch> response = batchService.findBatchesByProductId(product);
+        System.out.println(response);
+        if (response.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(response);
     }
 
