@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Column;
 public record Batch(
     @Id Long id,
     String batchId,
-    @Column("product_id") ProductBatchDTO product,
+    Long productId,
     Double cost,
     Integer quantity,
     LocalDateTime validationDate,

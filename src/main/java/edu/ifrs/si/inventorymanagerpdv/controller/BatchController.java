@@ -1,35 +1,70 @@
 package edu.ifrs.si.inventorymanagerpdv.controller;
 
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
+import edu.ifrs.si.inventorymanagerpdv.model.ProductItem;
+import edu.ifrs.si.inventorymanagerpdv.model.dto.BatchItemResponseDTO;
+import edu.ifrs.si.inventorymanagerpdv.model.dto.ProductBatchDTO;
+import edu.ifrs.si.inventorymanagerpdv.service.ProductItemService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import edu.ifrs.si.inventorymanagerpdv.model.Batch;
 import edu.ifrs.si.inventorymanagerpdv.service.BatchService;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/batches")
 public class BatchController {
 
     private final BatchService batchService;
+    private final ProductItemService productItemService;
 
-    public BatchController(BatchService batchService) {
+    public BatchController(BatchService batchService, ProductItemService productItemService) {
         this.batchService = batchService;
+        this.productItemService = productItemService;
     }
 
 
     @GetMapping()
-    public ResponseEntity<List<Batch>> getBatchesForProductId(@RequestParam(required = true) Long product){
-        List<Batch> response = batchService.findBatchesByProductId(product);
-        System.out.println(response);
-        if (response.isEmpty()) {
+    public ResponseEntity<List<BatchItemResponseDTO>> getBatchesForProductId(@RequestParam(required = true) Long product){
+        List<Batch> batches = batchService.findBatchesByProductId(product);
+        if (batches.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
+        ProductItem productItem = productItemService.getProductItemById(product);
+        if (productItem == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<BatchItemResponseDTO> response = batches.stream()
+                .map(batch -> new BatchItemResponseDTO(
+                    batch.id(),
+                    batch.batchId(),
+                    new ProductBatchDTO(productItem.id(), productItem.name()),
+                    batch.cost(),
+                    batch.quantity(),
+                    batch.validationDate(),
+                    batch.createdAt(),
+                    batch.updatedAt()
+                ))
+                .toList();
+
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping
+    public ResponseEntity<Void> createBatch(@RequestBody Batch batch, UriComponentsBuilder ucb){
+        Batch request = batchService.createBatch(batch);
+        if (request == null) return ResponseEntity.badRequest().build();
+
+        URI locationOfNewBatch = ucb
+                .path("/batches/{id}")
+                .buildAndExpand(request.id())
+                .toUri();
+        return ResponseEntity.created(locationOfNewBatch).build();
+    }
 }

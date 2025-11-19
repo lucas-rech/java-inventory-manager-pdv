@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 
+import edu.ifrs.si.inventorymanagerpdv.model.Batch;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,5 +60,14 @@ public class BatchTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isBlank();
+    }
+
+
+    @Test
+    void shouldCreateAKnewBatchWhenProductExists() {
+        Batch batch = new Batch(null, "34456GBVX", 4L, 400.00, 100, LocalDateTime.parse("2025-11-19T09:00:00"), LocalDateTime.now(), LocalDateTime.now());
+
+        ResponseEntity<Void> createResponse = restTemplate.postForEntity("/batches", batch, Void.class);
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 }
