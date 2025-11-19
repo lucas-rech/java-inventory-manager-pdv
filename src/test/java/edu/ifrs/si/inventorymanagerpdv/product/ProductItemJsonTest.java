@@ -97,7 +97,7 @@ public class ProductItemJsonTest {
     }
 
     @Test
-    void cashCardDeserializationTest() throws IOException {
+    void ProductItemDeserializationTest() throws IOException {
         String expected = """
                 {
                     "id": 1,

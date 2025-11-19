@@ -32,3 +32,16 @@ INSERT INTO "product_item" (NAME, DESCRIPTION, GTIN, NCM, PRICE, COST, CREATED_A
 
 INSERT INTO "app_user"(NAME, USERNAME, PHONE_NUMBER, ROLE, PASSWORD, CREATED_AT, UPDATED_AT, DELETED) VALUES
 ('Lucas Rech', 'lucasrech00', '54999999999', 'ADMIN', '$2a$10$2E3JfXy1k6ybaz.fKaV0OeHqMxkW.Evn1SxFhdYHlxzLuboxeR7iq', '2025-02-26T13:45:25', '2025-02-26T13:45:25', FALSE);
+
+
+INSERT INTO batch (id, batch_id, product_id, cost, quantity, validation_date, created_at, updated_at)
+VALUES (
+    1,
+    '123ABC456',
+    1,
+    200.00,
+    350,
+    '2023-10-01T10:00:00',
+    '2023-10-01T10:00:00',
+    '2023-10-01T10:00:00'
+);
