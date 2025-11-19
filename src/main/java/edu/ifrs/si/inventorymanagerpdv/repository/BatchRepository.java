@@ -12,5 +12,6 @@ import edu.ifrs.si.inventorymanagerpdv.model.Batch;
 public interface BatchRepository extends CrudRepository<Batch, Long>, PagingAndSortingRepository<Batch, Long>{
     
     List<Batch> findAllByProductId(Long id);
+    List<Batch> findAllByProductIdOrderByValidationDateAsc(Long productId);
 
 }

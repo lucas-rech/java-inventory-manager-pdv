@@ -1,7 +1,6 @@
 package edu.ifrs.si.inventorymanagerpdv.controller;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.ifrs.si.inventorymanagerpdv.model.ProductItem;
@@ -25,6 +24,27 @@ public class BatchController {
     public BatchController(BatchService batchService, ProductItemService productItemService) {
         this.batchService = batchService;
         this.productItemService = productItemService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BatchItemResponseDTO> findBatchById(@PathVariable Long id) {
+        Batch batch = batchService.findById(id);
+        if (batch == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ProductItem productItem = productItemService.getProductItemById(batch.productId());
+        BatchItemResponseDTO response = new BatchItemResponseDTO(
+                batch.id(),
+                batch.batchId(),
+                new ProductBatchDTO(productItem.id(), productItem.name()),
+                batch.cost(),
+                batch.quantity(),
+                batch.validationDate(),
+                batch.createdAt(),
+                batch.updatedAt()
+        );
+        return ResponseEntity.ok(response);
     }
 
 

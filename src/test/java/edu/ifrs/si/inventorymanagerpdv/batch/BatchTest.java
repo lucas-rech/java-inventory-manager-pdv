@@ -2,9 +2,12 @@ package edu.ifrs.si.inventorymanagerpdv.batch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 
 import edu.ifrs.si.inventorymanagerpdv.model.Batch;
+import edu.ifrs.si.inventorymanagerpdv.model.dto.BatchItemResponseDTO;
+import edu.ifrs.si.inventorymanagerpdv.model.dto.ProductBatchDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import org.springframework.test.annotation.DirtiesContext;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -64,10 +68,35 @@ public class BatchTest {
 
 
     @Test
+    @DirtiesContext
     void shouldCreateAKnewBatchWhenProductExists() {
-        Batch batch = new Batch(null, "34456GBVX", 4L, 400.00, 100, LocalDateTime.parse("2025-11-19T09:00:00"), LocalDateTime.now(), LocalDateTime.now());
+        Batch batch = new Batch(null, "34456GBVX", 4L, 400.00, 100, LocalDateTime.parse("2025-11-19T09:00:00"), LocalDateTime.parse("2025-11-19T10:00:00"), LocalDateTime.parse("2025-11-19T11:00:00"));
 
         ResponseEntity<Void> createResponse = restTemplate.postForEntity("/batches", batch, Void.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        URI locationOfNewBatch = createResponse.getHeaders().getLocation();
+        ResponseEntity<String> getResponse = restTemplate.getForEntity(locationOfNewBatch, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+        Number id = documentContext.read("$.id");
+        assertThat(id).isNotNull();
+        String batchId = documentContext.read("$.batchId");
+        assertThat(batchId).isEqualTo("34456GBVX");
+        Number productId = documentContext.read("$.product.id");
+        assertThat(productId).isEqualTo(4);
+        String productName = documentContext.read("$.product.name");
+        assertThat(productName).isEqualTo("Guaraná Antarctica 2L");
+        Double cost = documentContext.read("$.cost");
+        assertThat(cost).isEqualTo(400.00);
+        Number quantity = documentContext.read("$.quantity");
+        assertThat(quantity).isEqualTo(100);
+        String validationDate = documentContext.read("$.validationDate");
+        assertThat(LocalDateTime.parse(validationDate)).isEqualTo("2025-11-19T09:00:00");
+        String createdAt = documentContext.read("$.createdAt");
+        assertThat(createdAt).isEqualTo("2025-11-19T10:00:00");
+        String updatedAt = documentContext.read("$.updatedAt");
+        assertThat(updatedAt).isEqualTo("2025-11-19T11:00:00");
     }
 }
