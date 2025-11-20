@@ -100,7 +100,7 @@ void setup() {
 
     @Test
     @DirtiesContext
-    void shouldCreateANewnProductItem() {
+    void shouldCreateANewProductItem() {
         ProductItem productItem = new ProductItem(null, "Whisky Jack Daniel's Fire 1L",  "O melhor whisky que está tendo por essas bandas", "64689345670789", "12345678", 150.00, 90.89, LocalDateTime.now(), LocalDateTime.now());
 
         ResponseEntity<Void> createResponse = restTemplate
