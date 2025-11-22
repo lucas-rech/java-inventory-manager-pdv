@@ -1,5 +1,7 @@
 package edu.ifrs.si.inventorymanagerpdv.consumer;
 
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,5 +22,57 @@ public class ConsumerTest {
         ResponseEntity<String> response = restTemplate
             .getForEntity("/consumers", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        Number id = documentContext.read("$.[0].id");
+        assertThat(id).isEqualTo(1);
+        String name = documentContext.read("$.[0].name");
+        assertThat(name).isEqualTo("Alex");
+        String lastName = documentContext.read("$.[0].lastName");
+        assertThat(lastName).isEqualTo("Turner");
+        String email = documentContext.read("$.[0].email");
+        assertThat(email).isEqualTo("alexturner@gmail.com");
+        String document = documentContext.read("$.[0].document");
+        assertThat(document).isEqualTo("94387634945");
+        String phoneNumber = documentContext.read("$.[0].phoneNumber");
+        assertThat(phoneNumber).isEqualTo("54999998888");
+        String createdAt = documentContext.read("$.[0].createdAt");
+        assertThat(createdAt).isEqualTo("2024-05-20T14:30:00");
+        String updatedAt = documentContext.read("$.[0].updatedAt");
+        assertThat(updatedAt).isEqualTo("2024-05-20T14:30:00");
+    }
+
+
+    @Test
+    void shouldReturnAConsumerWhenIdExists() {
+        ResponseEntity<String> response = restTemplate
+            .getForEntity("/consumers/1", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        Number id = documentContext.read("$.id");
+        assertThat(id).isEqualTo(1);
+        String name = documentContext.read("$.name");
+        assertThat(name).isEqualTo("Alex");
+        String lastName = documentContext.read("$.lastName");
+        assertThat(lastName).isEqualTo("Turner");
+        String email = documentContext.read("$.email");
+        assertThat(email).isEqualTo("alexturner@gmail.com");
+        String document = documentContext.read("$.document");
+        assertThat(document).isEqualTo("94387634945");
+        String phoneNumber = documentContext.read("$.phoneNumber");
+        assertThat(phoneNumber).isEqualTo("54999998888");
+        String createdAt = documentContext.read("$.createdAt");
+        assertThat(createdAt).isEqualTo("2024-05-20T14:30:00");
+        String updatedAt = documentContext.read("$.updatedAt");
+        assertThat(updatedAt).isEqualTo("2024-05-20T14:30:00");
+    }
+
+
+    @Test
+    void shouldNotReturnAConsumerWhenIdDoesNotExist() {
+        ResponseEntity<String> response = restTemplate
+            .getForEntity("/consumers/999", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

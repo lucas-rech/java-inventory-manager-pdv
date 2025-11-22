@@ -27,7 +27,7 @@ public class ConsumerJsonTest {
                 "Turner",
                 "alexturner@gmail.com",
                 "94387634945",
-                "54 999998888",
+                "54999998888",
                 LocalDateTime.parse("2024-05-20T14:30:00"),
                 LocalDateTime.parse("2024-05-20T14:30:00")
         );
@@ -44,7 +44,7 @@ public class ConsumerJsonTest {
         assertThat(json.write(consumer)).hasJsonPathStringValue("@.document");
         assertThat(json.write(consumer)).extractingJsonPathStringValue("@.document").isEqualTo("94387634945");
         assertThat(json.write(consumer)).hasJsonPathStringValue("@.phoneNumber");
-        assertThat(json.write(consumer)).extractingJsonPathStringValue("@.phoneNumber").isEqualTo("54 999998888");
+        assertThat(json.write(consumer)).extractingJsonPathStringValue("@.phoneNumber").isEqualTo("54999998888");
         assertThat(json.write(consumer)).hasJsonPathStringValue("@.createdAt");
         assertThat(json.write(consumer)).extractingJsonPathStringValue("@.createdAt").isEqualTo("2024-05-20T14:30:00");
         assertThat(json.write(consumer)).hasJsonPathStringValue("@.updatedAt");
@@ -62,7 +62,7 @@ public class ConsumerJsonTest {
                       "lastName": "Turner",
                       "email": "alexturner@gmail.com",
                       "document": "94387634945",
-                      "phoneNumber": "54 999998888",
+                      "phoneNumber": "54999998888",
                       "createdAt": "2024-05-20T14:30:00",
                       "updatedAt": "2024-05-20T14:30:00"
                 }
@@ -75,7 +75,7 @@ public class ConsumerJsonTest {
                         "Turner",
                         "alexturner@gmail.com",
                         "94387634945",
-                        "54 999998888",
+                        "54999998888",
                         LocalDateTime.parse("2024-05-20T14:30:00"),
                         LocalDateTime.parse("2024-05-20T14:30:00")
                 ));
@@ -85,7 +85,7 @@ public class ConsumerJsonTest {
         assertThat(json.parseObject(expected).lastName()).isEqualTo("Turner");
         assertThat(json.parseObject(expected).email()).isEqualTo("alexturner@gmail.com");
         assertThat(json.parseObject(expected).document()).isEqualTo("94387634945");
-        assertThat(json.parseObject(expected).phoneNumber()).isEqualTo("54 999998888");
+        assertThat(json.parseObject(expected).phoneNumber()).isEqualTo("54999998888");
         assertThat(json.parseObject(expected).createdAt()).isEqualTo(LocalDateTime.parse("2024-05-20T14:30:00"));
         assertThat(json.parseObject(expected).updatedAt()).isEqualTo(LocalDateTime.parse("2024-05-20T14:30:00"));
     }

@@ -34,7 +34,7 @@ INSERT INTO "app_user"(NAME, USERNAME, PHONE_NUMBER, ROLE, PASSWORD, CREATED_AT,
 ('Lucas Rech', 'lucasrech00', '54999999999', 'ADMIN', '$2a$10$2E3JfXy1k6ybaz.fKaV0OeHqMxkW.Evn1SxFhdYHlxzLuboxeR7iq', '2025-02-26T13:45:25', '2025-02-26T13:45:25', FALSE);
 
 
-INSERT INTO batch (batch_id, product_id, cost, quantity, validation_date, created_at, updated_at)
+INSERT INTO "batch" (batch_id, product_id, cost, quantity, validation_date, created_at, updated_at)
 VALUES (
     '123ABC456',
     1,
@@ -44,3 +44,10 @@ VALUES (
     '2023-10-01T10:00:00',
     '2023-10-01T10:00:00'
 );
+
+
+INSERT INTO "consumer" (name, last_name, email, document, phone_number, created_at, updated_at)
+VALUES (
+        'Alex', 'Turner', 'alexturner@gmail.com', '94387634945', '54999998888', '2024-05-20T14:30:00', '2024-05-20T14:30:00'
+);
+

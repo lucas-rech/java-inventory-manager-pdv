@@ -33,8 +33,6 @@ public class BatchTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        System.out.println(response.getBody());
-
         Number id = documentContext.read("$[0].id");
         String batchId = documentContext.read("$[0].batchId");
         Number productId = documentContext.read("$[0].product.id");
