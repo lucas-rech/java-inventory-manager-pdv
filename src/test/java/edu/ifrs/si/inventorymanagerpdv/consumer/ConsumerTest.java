@@ -2,6 +2,7 @@ package edu.ifrs.si.inventorymanagerpdv.consumer;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import edu.ifrs.si.inventorymanagerpdv.model.dto.CreateConsumerDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -74,5 +75,20 @@ public class ConsumerTest {
         ResponseEntity<String> response = restTemplate
             .getForEntity("/consumers/999", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+
+    @Test
+    void shouldCreateANewConsumer() {
+        CreateConsumerDTO newConsumer = new CreateConsumerDTO(
+                "Jamie",
+                "Cook",
+                "jamiecook@gmail.com",
+                "12345678900",
+                "54988887777");
+
+        ResponseEntity<Void> response = restTemplate
+                .postForEntity("/consumers", newConsumer, Void.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 }
