@@ -6,12 +6,11 @@ import java.net.URI;
 import java.time.LocalDateTime;
 
 import edu.ifrs.si.inventorymanagerpdv.model.Batch;
-import edu.ifrs.si.inventorymanagerpdv.model.dto.BatchItemResponseDTO;
-import edu.ifrs.si.inventorymanagerpdv.model.dto.ProductBatchDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -96,5 +95,17 @@ public class BatchTest {
         assertThat(createdAt).isEqualTo("2025-11-19T10:00:00");
         String updatedAt = documentContext.read("$.updatedAt");
         assertThat(updatedAt).isEqualTo("2025-11-19T11:00:00");
+    }
+
+
+    @Test
+    @DirtiesContext
+    void shouldConsumeInventoryWhenSufficientQuantityExists() {
+        ResponseEntity<Integer> response = restTemplate.exchange(
+                "/batches/consume/1?quantity=351",
+                HttpMethod.PATCH,
+                null, Integer.class
+        );
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }

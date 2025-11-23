@@ -87,4 +87,14 @@ public class BatchController {
                 .toUri();
         return ResponseEntity.created(locationOfNewBatch).build();
     }
+
+
+    @PatchMapping("consume/{productId}")
+    public ResponseEntity<Integer> consumeInventoryByProductId(
+            @PathVariable Long productId,
+            @RequestParam Integer quantity
+    ) {
+        Integer consumedQuantity = batchService.consumeInventoryByProductId(productId, quantity);
+        return ResponseEntity.ok(consumedQuantity);
+    }
 }
