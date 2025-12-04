@@ -30,6 +30,7 @@ dependencies {
 }
 
 tasks.named('test') {
+    jvmArgs = ['-Dfile.encoding=UTF-8']
 	useJUnitPlatform()
 	testLogging {
 		events = ["passed", "skipped", "failed"]
